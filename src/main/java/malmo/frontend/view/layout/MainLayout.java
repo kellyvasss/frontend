@@ -9,6 +9,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import malmo.frontend.view.ArticleView;
 import org.apache.hc.core5.http.ParseException;
@@ -37,7 +38,7 @@ public class MainLayout extends AppLayout {
     private FormLayout createLoginForm(Dialog loginDialog) {
         FormLayout loginForm = new FormLayout();
         TextField username = new TextField("Användarnamn");
-        TextField password = new TextField("Lösenord");
+        PasswordField password = new PasswordField("Lösenord");
         Button btnLogin = new Button("Logga in", event -> {
             try {
                 handleLoginResult(loginDialog, username.getValue(), password.getValue());

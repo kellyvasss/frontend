@@ -49,6 +49,24 @@ public class CartAPI {
             System.out.println("Parse exeption " + e.getMessage());
         } return Collections.emptyList();
     }
+    public static String getSumOfArticlesInCart() {
+        HttpGet get = new HttpGet(baseURL + "/sum");
+        get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + LoginAPI.getJwt());
+        try {
+            CloseableHttpResponse response = httpClient.execute(get);
+            if (response.getCode() != 200) {
+                System.out.println("Misslyckad med att hämta summa av artiklar " + response.getCode());
+            }
+            HttpEntity entity = response.getEntity();
+            ObjectMapper mapper = new ObjectMapper();
+            String sum = String.valueOf(mapper.readValue(EntityUtils.toString(entity), new TypeReference<Integer>() {}));
+            return sum;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        } return null;
+    }
     public static void addToCart(CartItem item) throws IOException, ParseException {
         HttpPost post = new HttpPost(baseURL);
         ObjectMapper mapper = new ObjectMapper();

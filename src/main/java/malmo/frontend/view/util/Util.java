@@ -25,6 +25,18 @@ public class Util {
         link.setRoute(clazz);
         return new Tab(link);
     }
+    public static Tab createTabWithNotification(VaadinIcon icon, String viewName, Class clazz, String sum) {
+        Icon viewIcon = icon.create();
+        viewIcon.getStyle().set("box-sizing", "border-box")
+                .set("margin-inline-end", "var(--lumo-space-m)")
+                .set("margin-inline-start", "var(--lumo-space-xs)")
+                .set("padding", "var(--lumo-space-xs)");
+
+        RouterLink link = new RouterLink();
+        link.add(viewIcon, new Span(viewName), new Span(String.valueOf(sum)));
+        link.setRoute(clazz);
+        return new Tab(link);
+    }
     public static void updateGrid(Grid<Article> grid, String searchTerm){
         try {
             grid.setItems(ArticleAPI.getArticles(searchTerm));
