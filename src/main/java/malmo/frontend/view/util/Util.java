@@ -33,9 +33,18 @@ public class Util {
                 .set("padding", "var(--lumo-space-xs)");
 
         RouterLink link = new RouterLink();
-        link.add(viewIcon, new Span(viewName), new Span(String.valueOf(sum)));
+        link.add(viewIcon, new Span(viewName));
         link.setRoute(clazz);
-        return new Tab(link);
+        Span span = new Span(sum);
+        span.getElement().getThemeList().add("badge small contrast");
+        span.getStyle().set("margin-inline-start", "var(--lumo-space-xs)");
+        return new Tab(new Span(link), span);
+    }
+    public static void updateCartSum(Tab tab, String sum) {
+        if (tab.getChildren().count() == 2 && tab.getChildren().toArray()[1] instanceof Span) {
+            Span span = (Span) tab.getChildren().toArray()[1];
+            span.setText(sum);
+        } else System.out.println("fel med uppdatera tab");
     }
     public static void updateGrid(Grid<Article> grid, String searchTerm){
         try {
