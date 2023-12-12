@@ -1,4 +1,6 @@
 package malmo.frontend.view.layout;
 
-public class AdminLayout {
+import com.vaadin.flow.component.applayout.AppLayout;
+
+public class AdminLayout extends AppLayout {
 }

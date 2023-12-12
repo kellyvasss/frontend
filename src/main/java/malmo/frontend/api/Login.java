@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.UI;
 import malmo.frontend.dto.LoginResponse;
 import malmo.frontend.dto.User;
+import malmo.frontend.view.AdminView;
+import malmo.frontend.view.ArticleView;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
@@ -47,7 +49,7 @@ public class Login {
         jwt = loginResponse.jwt();
         if (loginResponse.user().getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ADMIN"))) {
             UI.getCurrent().navigate(AdminView.class);
-        }
+        } else UI.getCurrent().navigate(ArticleView.class);
         return true;
 
     }
