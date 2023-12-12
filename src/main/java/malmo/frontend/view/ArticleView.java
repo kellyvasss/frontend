@@ -1,8 +1,108 @@
 package malmo.frontend.view;
 
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
+import malmo.frontend.api.CartAPI;
+import malmo.frontend.dto.Article;
+import malmo.frontend.dto.CartItem;
+import malmo.frontend.view.layout.UserLayout;
+import org.apache.hc.core5.http.ParseException;
 
-@Route("articles")
+import java.io.IOException;
+
+import static malmo.frontend.view.util.Util.updateGrid;
+
+@Route(value = "articles", layout = UserLayout.class)
 public class ArticleView extends VerticalLayout {
+
+    Grid<Article> grid = new Grid<>(Article.class, false);
+    TextField filterText = new TextField();
+    Article article;
+    public ArticleView() {
+
+        configureGrid();
+        configureFilterText();
+
+        add(
+                filterText,
+                grid
+        );
+
+    }
+
+    private void configureGrid() {
+        grid.addColumn(Article::getName).setHeader("Namn");
+        grid.addColumn(Article::getDescription).setHeader("Beskrivning");
+        grid.addColumn(Article::getCost).setHeader("Pris");
+
+        grid.addComponentColumn(article -> {
+            Icon cart = new Icon(VaadinIcon.CART);
+            cart.addClickListener(click -> {
+                // Dialog ruta för köp
+                openAddArticleDialog();
+                this.article = article;
+            });
+            return cart;
+        }).setWidth("150px").setFlexGrow(0);
+
+        grid.asSingleSelect().addValueChangeListener(marked -> article = marked.getValue());
+    }
+
+    private void openAddArticleDialog() {
+        Dialog dialog = new Dialog();
+        dialog.setHeaderTitle("Lägg till artikel " + article.getName());
+        NumberField quantity = new NumberField("Antal");
+        dialog.add(quantity);
+        Button btnSave = createSaveButton(dialog, quantity.getValue());
+        Button btnCancel = new Button("Avbryt", click -> dialog.close());
+        dialog.getFooter().add(btnSave, btnCancel);
+
+    }
+
+    private Button createSaveButton(Dialog dialog, double quantity) {
+
+        Button btnSave = new Button("Lägg till i kundkorg", click -> {
+            // kalla på api spara artikel till kundkorg
+            CartItem cartItem = new CartItem(article.getName(), (int) quantity);
+            try {
+                CartAPI.addToCart(cartItem);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            dialog.close();
+        });
+        btnSave.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+        return btnSave;
+    }
+
+    private void configureFilterText() {
+        filterText.setPlaceholder("Filtrera på namn...");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(event -> updateGrid(grid, filterText.getValue()));
+    }
+
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
+
+
 }

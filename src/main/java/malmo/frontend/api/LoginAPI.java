@@ -1,6 +1,5 @@
 package malmo.frontend.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.UI;
@@ -8,6 +7,7 @@ import malmo.frontend.dto.LoginResponse;
 import malmo.frontend.dto.User;
 import malmo.frontend.view.AdminView;
 import malmo.frontend.view.ArticleView;
+import malmo.frontend.view.layout.UserLayout;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import static malmo.frontend.api.Payload.createPayload;
 
-public class Login {
+public class LoginAPI {
 
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -32,7 +32,7 @@ public class Login {
 
     public static boolean login(String username, String password) throws IOException, ParseException {
         User loginUser = new User(username, password);
-        HttpPost req = new HttpPost("http://localhost:8080/auth/login");
+        HttpPost req = new HttpPost("http://localhost:8080/auth/login-user");
         req.setEntity(createPayload(loginUser));
         CloseableHttpResponse response = httpClient.execute(req);
 
@@ -49,7 +49,10 @@ public class Login {
         jwt = loginResponse.jwt();
         if (loginResponse.user().getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ADMIN"))) {
             UI.getCurrent().navigate(AdminView.class);
-        } else UI.getCurrent().navigate(ArticleView.class);
+        } else {
+            UserLayout.setUsername(loginResponse.user().getUsername());
+            UI.getCurrent().navigate(ArticleView.class);
+        }
         return true;
 
     }

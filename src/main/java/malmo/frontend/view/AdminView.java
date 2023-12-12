@@ -11,6 +11,11 @@ import com.vaadin.flow.router.Route;
 import malmo.frontend.dto.Article;
 import malmo.frontend.view.form.ArticleForm;
 import malmo.frontend.view.layout.AdminLayout;
+import org.apache.hc.core5.http.ParseException;
+
+import java.io.IOException;
+
+import static malmo.frontend.api.ArticleAPI.*;
 
 
 
@@ -66,7 +71,14 @@ public class AdminView extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(getArticles());
+        try {
+            grid.setItems(getArticles(filter.getValue()));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     private void addArticle() {

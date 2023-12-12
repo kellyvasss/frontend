@@ -12,7 +12,7 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
 import malmo.frontend.view.ArticleView;
 import org.apache.hc.core5.http.ParseException;
-import static malmo.frontend.api.Login.login;
+import static malmo.frontend.api.LoginAPI.login;
 import static malmo.frontend.view.util.Util.createTab;
 
 import java.io.IOException;
@@ -23,9 +23,8 @@ public class MainLayout extends AppLayout {
         createDrawer();
     }
     private void createHeader() {
-        H1 logo = new H1("MALMÖ SHOP");
+        H1 logo = new H1("Malmö Shop");
         Button btnLogin = new Button("Logga in", e -> openLoginDialog());
-
         addToNavbar(new HorizontalLayout(new DrawerToggle(), logo, btnLogin));
     }
 
@@ -72,6 +71,7 @@ public class MainLayout extends AppLayout {
         tabs.add(
                 createTab(VaadinIcon.PACKAGE, "Artiklar", ArticleView.class));
         addToDrawer(tabs);
+
     }
 
 
