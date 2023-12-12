@@ -27,7 +27,7 @@ import java.util.List;
 
 public class CartAPI {
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
-    private static String baseURL = "http://localhost:8080/shoppingcart";
+    private static String baseURL = "http://localhost:8080/Shoppingcart";
 
     public static List<Cart> getCart() {
         HttpGet get = new HttpGet(baseURL + "/cart");
@@ -59,7 +59,7 @@ public class CartAPI {
 
         CloseableHttpResponse response = httpClient.execute(post);
         if (response.getCode() != 200) {
-            System.out.println("fel med att add to cart" );
+            System.out.println("fel med att add to cart " + response.getCode());
             return;
         }
         HttpEntity entity = response.getEntity();
@@ -96,7 +96,7 @@ public class CartAPI {
 
         if (cart.getArticle().getName().equals(item.name()) && cart.getQuantity() == item.quantity()) { // ksk mst ändra denna med qty...
             System.out.println("succé!");
-        } else System.out.println("inte succes med addToCart.");
+        } else System.out.println("inte succes med addToCart."); // kolla igenom
 
     }
     public static void deleteItemFromCart(String articleName) throws IOException {

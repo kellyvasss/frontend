@@ -2,11 +2,10 @@ package malmo.frontend.view;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import malmo.frontend.api.CartAPI;
@@ -14,45 +13,81 @@ import malmo.frontend.dto.Cart;
 import malmo.frontend.view.util.button.CartButton;
 import malmo.frontend.view.layout.UserLayout;
 
+import java.io.IOException;
+
 @Route(value = "cart", layout = UserLayout.class)
 public class CartView extends VerticalLayout {
 
     private Grid<Cart> grid = new Grid<>(Cart.class, false);
+    private Button btnBuy = new Button("Köp");
     private double total;
     public CartView() {
         configureGrid();
-
+        configureBuyButton();
         add(
-
-                grid
+                grid,
+                btnBuy
         );
+    }
+
+    private void configureBuyButton() {
+        btnBuy.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        btnBuy.addClickListener(click -> {
+            try {
+                CartAPI.buy();
+                successfulBuy();
+            } catch (IOException e) {
+               noSuccessfulBuy();
+                throw new RuntimeException(e);
+            }
+        });
+    }
+    private void noSuccessfulBuy() {
+        Notification notification = new Notification();
+        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        notification.setText("Köp misslyckades!");
+        notification.setDuration(5000);
+        notification.setPosition(Notification.Position.TOP_STRETCH);
+        notification.open();
+    }
+    private void successfulBuy() {
+        Notification notification = new Notification();
+        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        notification.setText("Köp genomfört!");
+        notification.setDuration(5000);
+        notification.setPosition(Notification.Position.TOP_STRETCH);
+        notification.open();
     }
 
     private void configureGrid() {
         grid.addColumn(cart -> cart.getArticle().getName()).setHeader("Namn");
         grid.addColumn(Cart::getQuantity).setHeader("Antal");
-        grid.addColumn(cart -> cart.getArticle().getCost() * cart.getQuantity()).setHeader("Pris");
+        grid.addColumn(cart -> cart.getArticle().getPrice() * cart.getQuantity()).setHeader("Pris");
 
         grid.addComponentColumn(cart -> {
             // uppdatera med en
             CartButton add = new CartButton(VaadinIcon.PLUS, cart.getArticle().getName(), false);
+            add.addClickListener(click -> updateGrid());
             return add;
-        }).setWidth("150px").setFlexGrow(0);
+        }).setWidth("120px").setFlexGrow(0);
         grid.addComponentColumn(cart -> {
             // ta bort en
             CartButton minus = new CartButton(VaadinIcon.MINUS, cart.getArticle().getName(), cart.getQuantity());
             return minus;
 
-        }).setWidth("150px").setFlexGrow(0);
+        }).setWidth("120px").setFlexGrow(0);
 
         grid.addComponentColumn(cart -> {
             // ta bort alla
             CartButton delete = new CartButton(VaadinIcon.TRASH, cart.getArticle().getName(), true);
             return delete;
-        }).setWidth("150px").setFlexGrow(0);
-
+        }).setWidth("120px").setFlexGrow(0);
+        updateGrid();
     }
-    private static void deleteArticleFromCart(String articleName) {
+    private void updateGrid() {
+        grid.setItems(CartAPI.getCart());
+    }
+   /* private static void deleteArticleFromCart(String articleName) {
         CartAPI.deleteItemFromCart(articleName);
     }
 
@@ -75,7 +110,7 @@ public class CartView extends VerticalLayout {
             dialog.close();
         });
         return new VerticalLayout(header, btnCancel, btnDelete);
-    }
+    }*/
 
 
 

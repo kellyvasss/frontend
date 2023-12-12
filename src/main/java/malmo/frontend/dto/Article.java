@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class Article {
     private String name;
     private String description;
-    private Double cost;
+    private Double price;
 }

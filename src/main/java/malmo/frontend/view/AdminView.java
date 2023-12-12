@@ -55,7 +55,7 @@ public class AdminView extends VerticalLayout {
     private void configureGrid() {
         grid.addColumn(Article::getName).setHeader("Namn");
         grid.addColumn(Article::getDescription).setHeader("Beskrivning");
-        grid.addColumn(Article::getCost).setHeader("Pris");
+        grid.addColumn(Article::getPrice).setHeader("Pris");
 
         grid.asSingleSelect().addValueChangeListener(marked -> editArticle(marked.getValue()));
     }

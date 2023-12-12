@@ -6,7 +6,6 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -43,19 +42,20 @@ public class ArticleView extends VerticalLayout {
     private void configureGrid() {
         grid.addColumn(Article::getName).setHeader("Namn");
         grid.addColumn(Article::getDescription).setHeader("Beskrivning");
-        grid.addColumn(Article::getCost).setHeader("Pris");
+        grid.addColumn(Article::getPrice).setHeader("Pris");
 
         grid.addComponentColumn(article -> {
             Icon cart = new Icon(VaadinIcon.CART);
             cart.addClickListener(click -> {
                 // Dialog ruta för köp
-                openAddArticleDialog();
                 this.article = article;
+                openAddArticleDialog();
+                
             });
             return cart;
         }).setWidth("150px").setFlexGrow(0);
-
         grid.asSingleSelect().addValueChangeListener(marked -> article = marked.getValue());
+        updateGrid(grid, filterText.getValue());
     }
 
     private void openAddArticleDialog() {
@@ -63,22 +63,22 @@ public class ArticleView extends VerticalLayout {
         dialog.setHeaderTitle("Lägg till artikel " + article.getName());
         NumberField quantity = new NumberField("Antal");
         dialog.add(quantity);
-        Button btnSave = createSaveButton(dialog, quantity.getValue());
+        Button btnSave = createSaveButton(dialog, quantity);  // Använd uppdaterad metod här
         Button btnCancel = new Button("Avbryt", click -> dialog.close());
         dialog.getFooter().add(btnSave, btnCancel);
+        dialog.open();
 
     }
 
-    private Button createSaveButton(Dialog dialog, double quantity) {
+    private Button createSaveButton(Dialog dialog, NumberField quantityField) {
 
         Button btnSave = new Button("Lägg till i kundkorg", click -> {
             // kalla på api spara artikel till kundkorg
+            double quantity = quantityField.getValue() != null ? quantityField.getValue().doubleValue() : 0.0;
             CartItem cartItem = new CartItem(article.getName(), (int) quantity);
             try {
                 CartAPI.addToCart(cartItem);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (ParseException e) {
+            } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
             dialog.close();

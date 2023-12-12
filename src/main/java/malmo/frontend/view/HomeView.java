@@ -1,8 +1,6 @@
 package malmo.frontend.view;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -38,7 +36,7 @@ public class HomeView extends VerticalLayout {
     private void configureGrid() {
         grid.addColumn(Article::getName).setHeader("Namn");
         grid.addColumn(Article::getDescription).setHeader("Beskrivning");
-        grid.addColumn(Article::getCost).setHeader("Pris");
+        grid.addColumn(Article::getPrice).setHeader("Pris");
     }
 
 }
