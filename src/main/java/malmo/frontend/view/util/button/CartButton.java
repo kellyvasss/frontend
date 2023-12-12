@@ -10,6 +10,7 @@ import org.apache.hc.core5.http.ParseException;
 import java.io.IOException;
 
 public class CartButton extends Button {
+    // Andvänd vid uppdatera (+) och ta bort en hel rad
     public CartButton(VaadinIcon vaadinIcon, String articleName, boolean delete) {
         Icon icon = new Icon(vaadinIcon);
         setIcon(icon);
@@ -35,6 +36,7 @@ public class CartButton extends Button {
         });
     }
 
+    // Använd vid uppdatera (-), kontrollerar först om en hel rad skall raderas
     public CartButton(VaadinIcon vaadinIcon, String articleName, int oldQuantity) {
         Icon icon = new Icon(vaadinIcon);
         setIcon(icon);

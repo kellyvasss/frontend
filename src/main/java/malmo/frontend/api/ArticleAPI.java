@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import malmo.frontend.dto.Article;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 
@@ -16,6 +18,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static malmo.frontend.api.LoginAPI.*;
+import static malmo.frontend.api.Payload.createPayload;
 
 public class ArticleAPI {
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -34,6 +39,19 @@ public class ArticleAPI {
         System.out.println(articles.get(0).getPrice());
 
         return articles;
+    }
+    public static void createArticle(Article article) throws IOException {
+        HttpPost post = new HttpPost("http://localhost8080/articles/create");
+        post.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getJwt());
+        post.setEntity(createPayload(article));
+
+        CloseableHttpResponse response = httpClient.execute(post);
+
+        if(response.getCode() != 200) {
+            System.out.println("fel att lägga till artikel " + response.getCode());
+
+        }
+
 
     }
 }

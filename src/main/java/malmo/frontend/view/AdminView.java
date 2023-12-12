@@ -65,7 +65,7 @@ public class AdminView extends VerticalLayout {
         filter.setValueChangeMode(ValueChangeMode.LAZY);
         filter.addValueChangeListener(search -> updateList());
 
-        Button btnAddArticle = new Button("Lägg till artikel");
+        Button btnAddArticle = new Button("Lägg till ny artikel");
         btnAddArticle.addClickListener(click -> addArticle());
         return new HorizontalLayout(filter, btnAddArticle);
     }
@@ -100,9 +100,14 @@ public class AdminView extends VerticalLayout {
     }
     private void saveArticle(ArticleForm.SaveEvent event) {
         // Kalla på api för att spara artikeln
-        event.getArticle();
-        updateList();
-        closeEditor();
+        try {
+            createArticle(event.getArticle());
+            updateList();
+            closeEditor();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
     private void deleteArticle(ArticleForm.DeleteEvent event) {
         // Kalla på api för att radera en artikel
