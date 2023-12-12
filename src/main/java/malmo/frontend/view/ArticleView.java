@@ -25,9 +25,9 @@ import static malmo.frontend.view.util.Util.updateGrid;
 @Route(value = "articles", layout = UserLayout.class)
 public class ArticleView extends VerticalLayout {
 
-    Grid<Article> grid = new Grid<>(Article.class, false);
-    TextField filterText = new TextField();
-    Article article;
+    private Grid<Article> grid = new Grid<>(Article.class, false);
+    private TextField filterText = new TextField();
+    private Article article;
     public ArticleView() {
 
         configureGrid();
