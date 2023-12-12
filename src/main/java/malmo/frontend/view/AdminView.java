@@ -105,7 +105,7 @@ public class AdminView extends VerticalLayout {
             updateList();
             closeEditor();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Meddelande: " +e.getMessage());
         }
 
     }

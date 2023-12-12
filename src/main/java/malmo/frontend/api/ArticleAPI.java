@@ -41,7 +41,7 @@ public class ArticleAPI {
         return articles;
     }
     public static void createArticle(Article article) throws IOException {
-        HttpPost post = new HttpPost("http://localhost8080/articles/create");
+        HttpPost post = new HttpPost("http://localhost:8080/articles/create");
         post.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getJwt());
         post.setEntity(createPayload(article));
 

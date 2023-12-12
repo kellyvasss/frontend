@@ -18,7 +18,7 @@ public class ArticleForm extends FormLayout {
 
     TextField name = new TextField("Namn");
     TextField description = new TextField("Beskrivning");
-    NumberField cost = new NumberField("Pris");
+    NumberField price = new NumberField("Pris");
     Button save = new Button("Spara");
     Button delete = new Button("Radera");
     Button cancel = new Button("Avbryt");
@@ -31,7 +31,7 @@ public class ArticleForm extends FormLayout {
         add(
                 name,
                 description,
-                cost,
+                price,
                 createButtons()
         );
 
