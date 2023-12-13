@@ -101,7 +101,8 @@ public class AdminView extends VerticalLayout {
     private void saveArticle(ArticleForm.SaveEvent event) {
         // Kalla på api för att spara artikeln
         try {
-            createArticle(event.getArticle());
+            Article article = event.getArticle();
+            createArticle(article);
             updateList();
             closeEditor();
         } catch (IOException e) {

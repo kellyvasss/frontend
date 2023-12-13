@@ -11,10 +11,10 @@ import malmo.frontend.view.layout.MainLayout;
 import static malmo.frontend.view.util.Util.updateGrid;
 
 @Route(value = "", layout = MainLayout.class)
-public class HomeView extends VerticalLayout {
+public class MainView extends VerticalLayout {
     Grid<Article> grid = new Grid<>(Article.class, false);
     TextField filterText = new TextField();
-    public HomeView() {
+    public MainView() {
 
         configureGrid();
         configureFilterText();

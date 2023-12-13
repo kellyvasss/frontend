@@ -89,7 +89,7 @@ public class CartAPI {
 
     }
     public static void buy() throws IOException {
-        HttpPost post = new HttpPost(baseURL + "/checkout");
+        HttpPost post = new HttpPost(baseURL + "/buy");
         post.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + LoginAPI.getJwt());
         CloseableHttpResponse response = httpClient.execute(post);
         if (response.getCode() != 200) {

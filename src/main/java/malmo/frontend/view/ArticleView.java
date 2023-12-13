@@ -78,6 +78,7 @@ public class ArticleView extends VerticalLayout {
             CartItem cartItem = new CartItem(article.getName(), (int) quantity);
             try {
                 CartAPI.addToCart(cartItem);
+
             } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
