@@ -18,13 +18,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static malmo.frontend.api.LoginAPI.getJwt;
+
 public class HistoryAPI {
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
 
     private static String baseURL = "http://localhost:8080/history";
     public static List<History> getHistoryForUser() {
         HttpGet get = new HttpGet(baseURL + "/user");
-        get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + LoginAPI.getJwt());
+        get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getJwt());
         try {
             CloseableHttpResponse response = httpClient.execute(get);
 
@@ -42,9 +44,28 @@ public class HistoryAPI {
             System.out.println("Parse exeption " + e.getMessage());
         } return Collections.emptyList();
     }
-    public static List<History> getHistoryByArticle(String articlename) {
-        HttpGet get = new HttpGet(baseURL + "/article?articleName=" + articlename);
-        get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + LoginAPI.getJwt());
+    public static List<History> getAllHistory() {
+        HttpGet get = new HttpGet(baseURL);
+        get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getJwt());
+        try {
+            CloseableHttpResponse response = httpClient.execute(get);
+            if (response.getCode() != 200) {
+                System.out.println("Misslyckat med getAllHistory: " + response.getCode());
+            }
+            HttpEntity entity = response.getEntity();
+            ObjectMapper mapper = new ObjectMapper();
+            ArrayList<History> histories = mapper.readValue(EntityUtils.toString(entity), new TypeReference<ArrayList<History>>() {});
+            return histories;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (ParseException e ) {
+            System.out.println(e.getMessage());
+        } return Collections.emptyList();
+    }
+    // kolla denna metod
+    public static List<History> getHistoryByArticleOrUser(String articlename) {
+        HttpGet get = new HttpGet(baseURL + "/article?searchterm=" + articlename);
+        get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getJwt());
         try {
             CloseableHttpResponse response = httpClient.execute(get);
 

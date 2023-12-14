@@ -2,20 +2,15 @@ package malmo.frontend.view.layout;
 
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
-import malmo.frontend.api.CartAPI;
 import malmo.frontend.view.ArticleView;
 import malmo.frontend.view.CartView;
-import malmo.frontend.view.HistoryView;
+import malmo.frontend.view.UserHistoryView;
 
 import static malmo.frontend.view.util.Util.createTab;
-import static malmo.frontend.view.util.Util.createTabWithNotification;
 
 public class UserLayout extends AppLayout {
     private static String username = null;
@@ -30,7 +25,7 @@ public class UserLayout extends AppLayout {
         addToDrawer(new VerticalLayout(
                 createTab(VaadinIcon.PACKAGE, "Artiklar", ArticleView.class),
                 createTab(VaadinIcon.CART, "Kundkorg", CartView.class),
-                createTab(VaadinIcon.PIGGY_BANK_COIN, "Köphistorik", HistoryView.class)
+                createTab(VaadinIcon.PIGGY_BANK_COIN, "Köphistorik", UserHistoryView.class)
         ));
     }
 

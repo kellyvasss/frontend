@@ -13,7 +13,8 @@ import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
 
-import static malmo.frontend.api.HistoryAPI.getHistoryByArticle;
+import static malmo.frontend.api.HistoryAPI.getHistoryByArticleOrUser;
+
 
 public class Util {
     public static Tab createTab(VaadinIcon icon, String viewName, Class clazz) {
@@ -60,6 +61,6 @@ public class Util {
     }
 
     public static void updateGridHistory(Grid<History> grid, String searchTerm) {
-            grid.setItems(getHistoryByArticle(searchTerm));
+            grid.setItems(getHistoryByArticleOrUser(searchTerm));
     }
 }

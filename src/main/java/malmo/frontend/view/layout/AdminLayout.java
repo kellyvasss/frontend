@@ -6,7 +6,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import malmo.frontend.view.AdminView;
-import malmo.frontend.view.EconomyView;
+import malmo.frontend.view.AdminHistoryView;
 
 import static malmo.frontend.view.util.Util.createTab;
 
@@ -24,7 +24,7 @@ public class AdminLayout extends AppLayout {
     private void createDrawer() {
         addToDrawer(
                 createTab(VaadinIcon.PACKAGE, "Artiklar", AdminView.class),
-                createTab(VaadinIcon.LINE_CHART, "Ekonomi", EconomyView.class)
+                createTab(VaadinIcon.LINE_CHART, "Ekonomi", AdminHistoryView.class)
         );
 
     }

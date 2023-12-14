@@ -9,21 +9,30 @@ import malmo.frontend.api.HistoryAPI;
 import malmo.frontend.dto.History;
 import malmo.frontend.view.layout.AdminLayout;
 
+import static malmo.frontend.api.HistoryAPI.getAllHistory;
 import static malmo.frontend.view.util.Util.updateGridHistory;
 
 @Route(value = "economy", layout = AdminLayout.class)
-public class EconomyView extends VerticalLayout {
+public class AdminHistoryView extends VerticalLayout {
     private Grid<History> grid = new Grid<>(History.class, false);
     private TextField filterText = new TextField();
 
-    public EconomyView() {
+    public AdminHistoryView() {
+
+        configureGrid();
+        configureFilterText();
+
+        add(
+                filterText,
+                grid
+        );
 
     }
     private void configureGrid() {
         grid.addColumn(history -> history.getArticle().getName()).setHeader("Namn");
         grid.addColumn(History::getQuantity).setHeader("Antal");
         grid.addColumn(history -> history.getArticle().getPrice() * history.getQuantity()).setHeader("Pris");
-        grid.setItems(HistoryAPI.getHistoryForUser());
+        grid.setItems(getAllHistory());
     }
     private void configureFilterText() {
         filterText.setPlaceholder("Filtrera på artikelnamn...");
