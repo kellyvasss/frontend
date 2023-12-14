@@ -1,7 +1,9 @@
 package malmo.frontend.view;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.Icon;
@@ -18,6 +20,9 @@ import malmo.frontend.view.layout.UserLayout;
 import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 
 import static malmo.frontend.view.util.Util.updateGridArticles;
 
@@ -48,34 +53,40 @@ public class ArticleView extends VerticalLayout {
             Icon cart = new Icon(VaadinIcon.CART);
             cart.addClickListener(click -> {
                 // Dialog ruta för köp
+                article.getName();
                 this.article = article;
                 openAddArticleDialog();
                 
             });
             return cart;
         }).setWidth("150px").setFlexGrow(0);
-        grid.asSingleSelect().addValueChangeListener(marked -> article = marked.getValue());
+        //grid.asSingleSelect().addValueChangeListener(marked -> article = marked.getValue());
         updateGridArticles(grid, filterText.getValue());
     }
 
     private void openAddArticleDialog() {
         Dialog dialog = new Dialog();
         dialog.setHeaderTitle("Lägg till artikel " + article.getName());
-        NumberField quantity = new NumberField("Antal");
+        //NumberField quantity = new NumberField("Antal");
+        //dialog.add(quantity);
+
+        ComboBox<Integer> quantity = new ComboBox<>("Antal", IntStream.rangeClosed(1,10).boxed().collect(Collectors.toList()));
+        quantity.setValue(1);
         dialog.add(quantity);
-        Button btnSave = createSaveButton(dialog, quantity);  // Använd uppdaterad metod här
+
+        Button btnSave = createSaveButton(dialog, quantity);
         Button btnCancel = new Button("Avbryt", click -> dialog.close());
         dialog.getFooter().add(btnSave, btnCancel);
         dialog.open();
 
     }
 
-    private Button createSaveButton(Dialog dialog, NumberField quantityField) {
-
+    private Button createSaveButton(Dialog dialog, ComboBox<Integer> quantity) {
         Button btnSave = new Button("Lägg till i kundkorg", click -> {
             // kalla på api spara artikel till kundkorg
-            double quantity = quantityField.getValue() != null ? quantityField.getValue().doubleValue() : 0.0;
-            CartItem cartItem = new CartItem(article.getName(), (int) quantity);
+            //double quantity = quantityField.getValue() >= 1 && quantityField.getValue() != null  ? quantityField.getValue().doubleValue() : 1;
+            Integer selected = quantity.getValue();
+            CartItem cartItem = new CartItem(article.getName(), selected);
             try {
                 CartAPI.addToCart(cartItem);
 

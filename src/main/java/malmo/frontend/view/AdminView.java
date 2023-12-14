@@ -28,6 +28,7 @@ public class AdminView extends VerticalLayout {
     ArticleForm form;
 
     public AdminView() {
+
         configureGrid();
         configureForm();
 

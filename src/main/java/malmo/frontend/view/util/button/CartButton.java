@@ -3,11 +3,13 @@ package malmo.frontend.view.util.button;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import malmo.frontend.api.CartAPI;
 import malmo.frontend.dto.CartItem;
 import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
+import static malmo.frontend.view.util.Util.showNotification;
 
 public class CartButton extends Button {
     // Andvänd vid uppdatera (+) och ta bort en hel rad
@@ -19,6 +21,7 @@ public class CartButton extends Button {
             if (!delete) {
                 try {
                     CartAPI.updateCart(cartItem);
+                    showNotification(NotificationVariant.LUMO_PRIMARY, articleName + " uppdaterad!");
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 } catch (ParseException ex) {
@@ -28,6 +31,7 @@ public class CartButton extends Button {
             else {
                 try {
                     CartAPI.deleteItemFromCart(articleName);
+                    showNotification(NotificationVariant.LUMO_WARNING, articleName + " borttagen!");
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -45,6 +49,7 @@ public class CartButton extends Button {
             {
                 try {
                     CartAPI.deleteItemFromCart(articleName);
+                    showNotification(NotificationVariant.LUMO_WARNING, articleName + " borttagen!");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -55,6 +60,7 @@ public class CartButton extends Button {
             addClickListener(click -> {
                 try {
                     CartAPI.updateCart(cartItem);
+                    showNotification(NotificationVariant.LUMO_WARNING, articleName + " uppdaterad!");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } catch (ParseException e) {

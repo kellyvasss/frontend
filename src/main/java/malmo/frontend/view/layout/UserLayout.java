@@ -5,7 +5,6 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
 import malmo.frontend.view.ArticleView;
 import malmo.frontend.view.CartView;
 import malmo.frontend.view.UserHistoryView;
@@ -14,8 +13,6 @@ import static malmo.frontend.view.util.Util.createTab;
 
 public class UserLayout extends AppLayout {
     private static String username = null;
-    private Tab cart;
-
     public UserLayout() {
         createHeader();
         createDrawer();

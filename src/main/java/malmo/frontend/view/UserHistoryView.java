@@ -9,7 +9,7 @@ import malmo.frontend.dto.History;
 import malmo.frontend.view.layout.UserLayout;
 
 import static malmo.frontend.api.HistoryAPI.getHistoryForUser;
-//import static malmo.frontend.view.util.Util.updateGridHistory;
+
 
 
 @Route(value = "history", layout = UserLayout.class)
@@ -17,6 +17,7 @@ public class UserHistoryView extends VerticalLayout {
     private Grid<History> grid = new Grid<>(History.class, false);
     private TextField filterText = new TextField();
     public UserHistoryView() {
+
         configureGrid();
         configureFilterText();
 

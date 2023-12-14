@@ -1,5 +1,6 @@
 package malmo.frontend.view.layout;
 
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -28,7 +29,10 @@ public class MainLayout extends AppLayout {
         Button btnLogin = new Button("Logga in", e -> openLoginDialog());
         addToNavbar(new HorizontalLayout(new DrawerToggle(), logo, btnLogin));
     }
+    private void createDrawer() {
+        addToDrawer(createTab(VaadinIcon.PACKAGE, "Artiklar", ArticleView.class));
 
+    }
     private void openLoginDialog() {
         Dialog loginDialog = new Dialog();
         loginDialog.add(createLoginForm(loginDialog));
@@ -39,15 +43,17 @@ public class MainLayout extends AppLayout {
         FormLayout loginForm = new FormLayout();
         TextField username = new TextField("Användarnamn");
         PasswordField password = new PasswordField("Lösenord");
-        Button btnLogin = new Button("Logga in", event -> {
+        Button btnLogin = new Button("Logga in");
+        btnLogin.addClickShortcut(Key.ENTER);
+        btnLogin.addClickListener(click -> {
             try {
                 handleLoginResult(loginDialog, username.getValue(), password.getValue());
             } catch (IOException e) {
                 // Felhantering
                 System.out.println("IO fel" + e.getMessage());
-            } catch (ParseException e) {
+            } catch (ParseException ee) {
                 // Felhantering
-                System.out.println("Parse fel" + e.getMessage());
+                System.out.println("Parse fel" + ee.getMessage());
             }
         });
 
@@ -67,13 +73,7 @@ public class MainLayout extends AppLayout {
         return login(username, password);
     }
 
-    private void createDrawer() {
-        Tabs tabs = new Tabs();
-        tabs.add(
-                createTab(VaadinIcon.PACKAGE, "Artiklar", ArticleView.class));
-        addToDrawer(tabs);
 
-    }
 
 
 }

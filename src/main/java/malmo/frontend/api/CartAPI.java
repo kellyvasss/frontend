@@ -70,8 +70,6 @@ public class CartAPI {
     public static void addToCart(CartItem item) throws IOException, ParseException {
         HttpPost post = new HttpPost(baseURL);
         ObjectMapper mapper = new ObjectMapper();
-       // StringEntity payload = new StringEntity(mapper.writeValueAsString(item), ContentType.APPLICATION_JSON);
-       //post.setEntity(payload);
         post.setEntity(Payload.createPayload(item));
         post.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + LoginAPI.getJwt());
 
@@ -112,14 +110,13 @@ public class CartAPI {
         HttpEntity entity = response.getEntity();
         Cart cart = mapper.readValue(EntityUtils.toString(entity), new TypeReference<Cart>() {});
 
-        if (cart.getArticle().getName().equals(item.name()) && cart.getQuantity() == item.quantity()) { // ksk mst ändra denna med qty...
+        if (cart.getArticle().getName().equals(item.name())) {
             System.out.println("succé!");
         } else System.out.println("inte succes med addToCart."); // kolla igenom
 
     }
     public static void deleteItemFromCart(String articleName) throws IOException {
         HttpDelete delete = new HttpDelete(baseURL +"/?articleName=" + articleName);
-        ObjectMapper mapper = new ObjectMapper();
         delete.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + LoginAPI.getJwt());
 
         CloseableHttpResponse response = httpClient.execute(delete);

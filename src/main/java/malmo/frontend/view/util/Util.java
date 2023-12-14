@@ -4,6 +4,8 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.router.RouterLink;
 import malmo.frontend.api.ArticleAPI;
@@ -13,10 +15,19 @@ import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
 
+
 import static malmo.frontend.api.HistoryAPI.getHistoryByArticleOrUser;
 
 
 public class Util {
+    public static void showNotification(NotificationVariant variant, String content) {
+        Notification notification = new Notification();
+        notification.addThemeVariants(variant);
+        notification.setText(content);
+        notification.setDuration(5000);
+        notification.setPosition(Notification.Position.TOP_STRETCH);
+        notification.open();
+    }
     public static Tab createTab(VaadinIcon icon, String viewName, Class clazz) {
         Icon viewIcon = icon.create();
         viewIcon.getStyle().set("box-sizing", "border-box")

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class History {
+    private User user;
     private Article article;
     private Double price;
     private Integer quantity;
