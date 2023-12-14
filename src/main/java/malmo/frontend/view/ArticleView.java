@@ -19,7 +19,7 @@ import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
 
-import static malmo.frontend.view.util.Util.updateGrid;
+import static malmo.frontend.view.util.Util.updateGridArticles;
 
 @Route(value = "articles", layout = UserLayout.class)
 public class ArticleView extends VerticalLayout {
@@ -55,7 +55,7 @@ public class ArticleView extends VerticalLayout {
             return cart;
         }).setWidth("150px").setFlexGrow(0);
         grid.asSingleSelect().addValueChangeListener(marked -> article = marked.getValue());
-        updateGrid(grid, filterText.getValue());
+        updateGridArticles(grid, filterText.getValue());
     }
 
     private void openAddArticleDialog() {
@@ -92,7 +92,7 @@ public class ArticleView extends VerticalLayout {
         filterText.setPlaceholder("Filtrera på namn...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(event -> updateGrid(grid, filterText.getValue()));
+        filterText.addValueChangeListener(event -> updateGridArticles(grid, filterText.getValue()));
     }
 
 

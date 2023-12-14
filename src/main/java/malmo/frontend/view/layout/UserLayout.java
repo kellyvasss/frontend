@@ -29,7 +29,7 @@ public class UserLayout extends AppLayout {
     private void createDrawer() {
         addToDrawer(new VerticalLayout(
                 createTab(VaadinIcon.PACKAGE, "Artiklar", ArticleView.class),
-                cart = createTabWithNotification(VaadinIcon.CART, "Kundkorg", CartView.class, CartAPI.getSumOfArticlesInCart()),
+                createTab(VaadinIcon.CART, "Kundkorg", CartView.class),
                 createTab(VaadinIcon.PIGGY_BANK_COIN, "Köphistorik", HistoryView.class)
         ));
     }

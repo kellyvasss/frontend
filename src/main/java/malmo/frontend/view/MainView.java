@@ -8,7 +8,7 @@ import com.vaadin.flow.router.Route;
 import malmo.frontend.dto.Article;
 import malmo.frontend.view.layout.MainLayout;
 
-import static malmo.frontend.view.util.Util.updateGrid;
+import static malmo.frontend.view.util.Util.updateGridArticles;
 
 @Route(value = "", layout = MainLayout.class)
 public class MainView extends VerticalLayout {
@@ -23,14 +23,14 @@ public class MainView extends VerticalLayout {
               filterText,
               grid
         );
-        updateGrid(grid, filterText.getValue());
+        updateGridArticles(grid, filterText.getValue());
     }
 
     private void configureFilterText() {
         filterText.setPlaceholder("Filtrera på namn...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(event -> updateGrid(grid, filterText.getValue()));
+        filterText.addValueChangeListener(event -> updateGridArticles(grid, filterText.getValue()));
     }
 
     private void configureGrid() {

@@ -8,6 +8,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
+import malmo.frontend.api.ArticleAPI;
 import malmo.frontend.dto.Article;
 import malmo.frontend.view.form.ArticleForm;
 import malmo.frontend.view.layout.AdminLayout;
@@ -107,14 +108,21 @@ public class AdminView extends VerticalLayout {
             closeEditor();
         } catch (IOException e) {
             System.out.println("Meddelande: " +e.getMessage());
+            closeEditor();
         }
 
     }
     private void deleteArticle(ArticleForm.DeleteEvent event) {
         // Kalla på api för att radera en artikel
-        event.getArticle();
-        updateList();
-        closeEditor();
+        try {
+            ArticleAPI.deleteArticle(event.getArticle());
+            updateList();
+            closeEditor();
+        } catch (IOException e) {
+            System.out.println("Meddelande: " + e.getMessage());
+            closeEditor();
+        }
+
     }
 
 

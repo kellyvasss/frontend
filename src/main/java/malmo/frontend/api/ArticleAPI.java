@@ -1,8 +1,10 @@
 package malmo.frontend.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import malmo.frontend.dto.Article;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -51,7 +53,17 @@ public class ArticleAPI {
             System.out.println("fel att lägga till artikel " + response.getCode());
 
         }
+    }
+    public static void deleteArticle(Article article) throws IOException {
+        HttpDelete delete = new HttpDelete("http://localhost/articles/delete");
+        delete.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getJwt());
+        delete.setEntity(createPayload(article));
 
+        CloseableHttpResponse response = httpClient.execute(delete);
+
+        if (response.getCode() != 200) {
+            System.out.println("fel med att radera artikel " + response.getCode());
+        }
 
     }
 }

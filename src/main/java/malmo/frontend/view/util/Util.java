@@ -8,9 +8,12 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.router.RouterLink;
 import malmo.frontend.api.ArticleAPI;
 import malmo.frontend.dto.Article;
+import malmo.frontend.dto.History;
 import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
+
+import static malmo.frontend.api.HistoryAPI.getHistoryByArticle;
 
 public class Util {
     public static Tab createTab(VaadinIcon icon, String viewName, Class clazz) {
@@ -46,7 +49,7 @@ public class Util {
             span.setText(sum);
         } else System.out.println("fel med uppdatera tab");
     }
-    public static void updateGrid(Grid<Article> grid, String searchTerm){
+    public static void updateGridArticles(Grid<Article> grid, String searchTerm){
         try {
             grid.setItems(ArticleAPI.getArticles(searchTerm));
         } catch (IOException e){
@@ -54,6 +57,9 @@ public class Util {
         } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
+    }
 
+    public static void updateGridHistory(Grid<History> grid, String searchTerm) {
+            grid.setItems(getHistoryByArticle(searchTerm));
     }
 }
