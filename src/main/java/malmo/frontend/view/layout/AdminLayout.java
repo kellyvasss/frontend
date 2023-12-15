@@ -7,6 +7,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import malmo.frontend.view.AdminView;
 import malmo.frontend.view.AdminHistoryView;
 import malmo.frontend.view.ArticleView;
@@ -15,7 +17,15 @@ import malmo.frontend.view.MainView;
 import static malmo.frontend.view.layout.UserLayout.getUsername;
 import static malmo.frontend.view.util.Util.createTab;
 
-public class AdminLayout extends AppLayout {
+public class AdminLayout extends AppLayout implements BeforeEnterObserver {
+    @Override
+    public void beforeEnter(BeforeEnterEvent e) {
+        if(getUsername() == null) {
+            e.rerouteTo(MainView.class);
+        } else if(!getUsername().equals("admin")) {
+            e.rerouteTo(ArticleView.class);
+        }
+    }
     
     public AdminLayout() {
 
