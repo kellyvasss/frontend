@@ -27,7 +27,7 @@ import java.util.List;
 
 public class CartAPI {
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
-    private static String baseURL = "http://localhost:8080/Shoppingcart";
+    private static String baseURL = "http://localhost:8080/shoppingcart";
     public static List<Cart> getCart() {
         HttpGet get = new HttpGet(baseURL + "/cart");
         get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + LoginAPI.getJwt());
