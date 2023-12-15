@@ -38,8 +38,6 @@ public class ArticleAPI {
         HttpEntity entity = response.getEntity();
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<Article> articles = mapper.readValue(EntityUtils.toString(entity), new TypeReference<ArrayList<Article>>() {});
-        System.out.println(articles.get(0).getPrice());
-
         return articles;
     }
     public static void createArticle(Article article) throws IOException {

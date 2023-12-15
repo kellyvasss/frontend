@@ -7,16 +7,21 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import malmo.frontend.view.AdminView;
-import malmo.frontend.view.ArticleView;
-import malmo.frontend.view.CartView;
-import malmo.frontend.view.UserHistoryView;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import malmo.frontend.view.*;
 
 import static malmo.frontend.api.LoginAPI.getJwt;
 import static malmo.frontend.view.util.Util.createTab;
 
-public class UserLayout extends AppLayout {
+public class UserLayout extends AppLayout implements BeforeEnterObserver {
     private static String username = null;
+    @Override
+    public void beforeEnter(BeforeEnterEvent e) {
+        if(getUsername() == null) {
+            e.rerouteTo(MainView.class);
+        }
+    }
     public UserLayout() {
         createHeader();
         createDrawer();
@@ -35,6 +40,7 @@ public class UserLayout extends AppLayout {
         //addToNavbar(new DrawerToggle(), logo);
         Button btnAdmin = new Button("Gå till adminsida");
         btnAdmin.addClickListener(click -> UI.getCurrent().navigate(AdminView.class));
+        if(getUsername() == null) return;
         if (getUsername().equals("admin") && getJwt() != null) {
             // sätt admin funktion knapp
             addToNavbar(new DrawerToggle(), new H1("Välkommen Admin!"), btnAdmin);

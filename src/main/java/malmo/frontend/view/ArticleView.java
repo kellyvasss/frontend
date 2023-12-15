@@ -12,7 +12,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
+import jakarta.annotation.security.RolesAllowed;
 import malmo.frontend.api.CartAPI;
 import malmo.frontend.dto.Article;
 import malmo.frontend.dto.CartItem;
@@ -24,10 +27,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
+import static malmo.frontend.view.layout.UserLayout.getUsername;
 import static malmo.frontend.view.util.Util.updateGridArticles;
 
 @Route(value = "articles", layout = UserLayout.class)
 public class ArticleView extends VerticalLayout {
+
 
     private Grid<Article> grid = new Grid<>(Article.class, false);
     private TextField filterText = new TextField();

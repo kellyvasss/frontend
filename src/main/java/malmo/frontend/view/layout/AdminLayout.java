@@ -10,12 +10,15 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import malmo.frontend.view.AdminView;
 import malmo.frontend.view.AdminHistoryView;
 import malmo.frontend.view.ArticleView;
+import malmo.frontend.view.MainView;
 
+import static malmo.frontend.view.layout.UserLayout.getUsername;
 import static malmo.frontend.view.util.Util.createTab;
 
 public class AdminLayout extends AppLayout {
     
     public AdminLayout() {
+
         createHeader();
         createDrawer();
     }

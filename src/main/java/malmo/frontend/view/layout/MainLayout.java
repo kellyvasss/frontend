@@ -12,6 +12,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import malmo.frontend.view.ArticleView;
 import org.apache.hc.core5.http.ParseException;
 import static malmo.frontend.api.LoginAPI.login;
