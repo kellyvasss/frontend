@@ -47,10 +47,10 @@ public class LoginAPI {
             return false;
         }
         jwt = loginResponse.jwt();
+        UserLayout.setUsername(loginResponse.user().getUsername());
         if (loginResponse.user().getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ADMIN"))) {
             UI.getCurrent().navigate(AdminView.class);
         } else {
-            UserLayout.setUsername(loginResponse.user().getUsername());
             UI.getCurrent().navigate(ArticleView.class);
         }
         return true;
