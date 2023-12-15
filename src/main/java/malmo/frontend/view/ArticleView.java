@@ -67,9 +67,6 @@ public class ArticleView extends VerticalLayout {
     private void openAddArticleDialog() {
         Dialog dialog = new Dialog();
         dialog.setHeaderTitle("Lägg till artikel " + article.getName());
-        //NumberField quantity = new NumberField("Antal");
-        //dialog.add(quantity);
-
         ComboBox<Integer> quantity = new ComboBox<>("Antal", IntStream.rangeClosed(1,10).boxed().collect(Collectors.toList()));
         quantity.setValue(1);
         dialog.add(quantity);

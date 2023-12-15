@@ -70,7 +70,6 @@ public class CartView extends VerticalLayout {
             CartButton minus = new CartButton(VaadinIcon.MINUS, cart.getArticle().getName(), cart.getQuantity());
             minus.addClickListener(click -> {
                 updateGrid();
-
             });
             return minus;
 
