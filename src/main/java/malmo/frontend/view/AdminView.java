@@ -114,9 +114,10 @@ public class AdminView extends VerticalLayout {
 
     }
     private void deleteArticle(ArticleForm.DeleteEvent event) {
-        // Kalla på api för att radera en artikel
+
         try {
-            ArticleAPI.deleteArticle(event.getArticle());
+            Article article = event.getArticle();
+            ArticleAPI.deleteArticle(article);
             updateList();
             closeEditor();
         } catch (IOException e) {

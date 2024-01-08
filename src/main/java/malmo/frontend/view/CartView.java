@@ -3,9 +3,10 @@ package malmo.frontend.view;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import malmo.frontend.api.CartAPI;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static malmo.frontend.api.CartAPI.getCart;
+import static malmo.frontend.api.CartAPI.getCartAmount;
 import static malmo.frontend.view.util.Util.showNotification;
 
 @Route(value = "cart", layout = UserLayout.class)
@@ -24,16 +26,23 @@ public class CartView extends VerticalLayout {
 
     private Grid<Cart> grid = new Grid<>(Cart.class, false);
     private Button btnBuy = new Button("Köp");
-    private double total;
+    private H4 totalAmount = new H4();
+
     public CartView() {
 
         configureGrid();
         configureBuyButton();
+        configureTotalAmount();
         add(
                 grid,
-                btnBuy
+                new HorizontalLayout(totalAmount, btnBuy)
         );
     }
+
+    private void configureTotalAmount() {
+        totalAmount.setText(getCartAmount());
+    }
+
 
     private void configureBuyButton() {
         btnBuy.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
@@ -86,6 +95,7 @@ public class CartView extends VerticalLayout {
     private void updateGrid() {
         List<Cart> items = getCart();
         grid.setItems(items);
+        configureTotalAmount();
         if (items.isEmpty()) btnBuy.setEnabled(false);
     }
 

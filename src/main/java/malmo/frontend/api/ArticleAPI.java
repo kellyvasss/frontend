@@ -53,7 +53,7 @@ public class ArticleAPI {
         }
     }
     public static void deleteArticle(Article article) throws IOException {
-        HttpDelete delete = new HttpDelete("http://localhost/articles/delete");
+        HttpDelete delete = new HttpDelete("http://localhost:8080/articles/delete");
         delete.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getJwt());
         delete.setEntity(createPayload(article));
 
@@ -61,7 +61,10 @@ public class ArticleAPI {
 
         if (response.getCode() != 200) {
             System.out.println("fel med att radera artikel " + response.getCode());
+            // LÄGG TILL FELHANTERING; OM ARTIKEL EJ GÅR ATT RADERA, FINNS DET RELATERADE RADER I DB SOM BLOCKAR
         }
+        System.out.println(response.getCode());
+        System.out.println(article.getName() + article.getDescription() + article.getPrice());
 
     }
 }

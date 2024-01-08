@@ -28,6 +28,24 @@ import java.util.List;
 public class CartAPI {
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
     private static String baseURL = "http://localhost:8080/shoppingcart";
+    public static String getCartAmount() {
+        HttpGet get = new HttpGet(baseURL + "/amount");
+        get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + LoginAPI.getJwt());
+        try {
+            CloseableHttpResponse response = httpClient.execute(get);
+            if (response.getCode() != 200) {
+                System.out.println("misslyckat med hämta totalsumma av artiklar i varukorg, " + response.getCode());
+            }
+            HttpEntity entity = response.getEntity();
+            ObjectMapper mapper = new ObjectMapper();
+            String totalAmount = String.valueOf(mapper.readValue(EntityUtils.toString(entity), new TypeReference<Integer>() {}));
+            return totalAmount;
+        } catch (IOException e) {
+            System.out.println("IO exeption " + e.getMessage());
+        } catch (ParseException e) {
+            System.out.println("Parse exeption " + e.getMessage());
+        } return null;
+    }
     public static List<Cart> getCart() {
         HttpGet get = new HttpGet(baseURL + "/cart");
         get.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + LoginAPI.getJwt());
